@@ -1,0 +1,1 @@
+web: ./build/install/ktor-ulti-heroku/bin/ktor-ulti-heroku

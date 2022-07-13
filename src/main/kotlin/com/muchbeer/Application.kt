@@ -5,7 +5,7 @@ import io.ktor.server.netty.*
 import com.muchbeer.route.*
 
 fun main() {
-    embeddedServer(Netty, port = 8085, host = "127.0.0.1") {
+    embeddedServer(Netty,  System.getenv("PORT").toInt()) {
         configureRouting()
         configureSerialization()
     }.start(wait = true)
