@@ -10,6 +10,7 @@ import com.muchbeer.db.UssdTable.phoneNumber
 import com.muchbeer.db.UssdTable.serviceCode
 import com.muchbeer.db.UssdTable.sessionId
 import com.muchbeer.db.UssdTable.text
+import com.muchbeer.model.ImageUpload
 import com.muchbeer.model.School
 import com.muchbeer.model.USSDModel
 import org.ktorm.database.Database

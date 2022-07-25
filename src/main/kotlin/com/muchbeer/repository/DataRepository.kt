@@ -1,5 +1,6 @@
 package com.muchbeer.repository
 
+import com.muchbeer.model.ImageUpload
 import com.muchbeer.model.School
 import com.muchbeer.model.USSDModel
 

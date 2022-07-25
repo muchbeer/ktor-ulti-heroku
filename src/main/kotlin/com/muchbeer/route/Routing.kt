@@ -1,16 +1,20 @@
 package com.muchbeer.route
 
 import com.muchbeer.db.DatabaseFactory
+import com.muchbeer.model.ImageUpload
 import com.muchbeer.model.School
 import com.muchbeer.model.USSDModel
 import com.muchbeer.repository.DataRepository
 import com.muchbeer.repository.DataRepositoryImpl
+import com.muchbeer.util.Constants
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.routing.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import org.ktorm.database.Database
+import java.io.File
 
 fun Application.configureRouting() {
 
@@ -39,7 +43,6 @@ fun Application.configureRouting() {
             call.respond(retrieveSchool)
         }
 
-
         post("/register") {
             //    call.response.headers.append("Content-Type", "application/json")
 
@@ -66,6 +69,44 @@ fun Application.configureRouting() {
             }
 
         }
+    }
 
+    routing {
+        var fileDescription = ""
+        var fileName = ""
+
+        post("/upload") {
+            val multipartData = call.receiveMultipart()
+
+            try {
+
+                multipartData.forEachPart { part ->
+                    when (part) {
+                        is PartData.FormItem -> {
+                            fileDescription = part.value
+                        }
+                        is PartData.FileItem -> {
+                            fileName = part.originalFileName as String
+                            val fileBytes = part.streamProvider().readBytes()
+                            File("uploads/$fileName").writeBytes(fileBytes)
+                        }
+                        else -> Unit
+                    }
+                }
+                val imageUrl = "${Constants.BASE_URL}/uploads/$fileName"
+                //  call.respondText("$fileDescription is uploaded to 'uploads/$fileName'")
+                call.respond(
+                    HttpStatusCode.OK,
+                    ImageUpload(
+                        imageUrl = imageUrl,
+                        fileName = fileName,
+                        fileDescription = fileDescription
+                    )
+                )
+            } catch (ex: Exception) {
+                File("${Constants.IMAGE_PATH}/$fileName").delete()
+                call.respond(HttpStatusCode.InternalServerError,"Image failed")
+            }
+        }
     }
 }

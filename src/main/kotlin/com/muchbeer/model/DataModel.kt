@@ -14,3 +14,9 @@ data class USSDModel(
     val serviceCode : String,
     val text : String
 )
+
+data class ImageUpload(
+    val imageUrl : String,
+    val fileName : String,
+    val fileDescription : String
+)
