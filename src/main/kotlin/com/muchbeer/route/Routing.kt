@@ -1,18 +1,22 @@
 package com.muchbeer.route
 
+import com.muchbeer.db.DatabaseFactory
 import com.muchbeer.model.School
 import com.muchbeer.model.USSDModel
 import com.muchbeer.repository.DataRepository
+import com.muchbeer.repository.DataRepositoryImpl
 import io.ktor.http.*
 import io.ktor.server.routing.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import org.koin.ktor.ext.inject
+import org.ktorm.database.Database
 
 fun Application.configureRouting() {
 
-    val repository : DataRepository by inject()
+    val database : Database = DatabaseFactory.init()
+    val repository : DataRepository = DataRepositoryImpl(database)
 
     val listTem: List<School> = listOf(
         School(1, "Lubaga", "Shy", "Both"),

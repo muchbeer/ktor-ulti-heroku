@@ -36,8 +36,8 @@ dependencies {
     implementation ("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation ("io.ktor:ktor-serialization-jackson:$ktor_version")
 
-    implementation ("io.insert-koin:koin-logger-slf4j:$koin_version")
-    implementation("io.insert-koin:koin-ktor:$koin_version")
+   // implementation ("io.insert-koin:koin-logger-slf4j:$koin_version")
+  //  implementation("io.insert-koin:koin-ktor:$koin_version")
 
     implementation ("mysql:mysql-connector-java:8.0.29")
     implementation ("org.ktorm:ktorm-core:3.5.0")
