@@ -77,18 +77,17 @@ fun Application.configureRouting() {
                 phonNumb = receiveSmsContent.phone_number,
                 message = receiveSmsContent.text_message
             )
-            println("We receive number : ${receiveSmsContent.phone_number}")
+      /*      println("We receive number : ${receiveSmsContent.phone_number}")
             println("We receive message : ${receiveSmsContent.text_message}")
             responseSMS.forEach {
                 println("We receive response : ${it?.status}")
-            }
-
-            call.respond( responseSMS)
-         /*   when(response) {
-                is DataState.Error -> call.respondText("Could not send sms")
-                is DataState.ErrorException -> call.respondText("The error is : ${response.exception.message}")
-                is DataState.Success -> call.respond(HttpStatusCode.OK,  response.data)
             }*/
+
+           when(responseSMS) {
+                is DataState.Error -> call.respondText("Could not send sms")
+                is DataState.ErrorException -> call.respond( "${responseSMS.exception.message}")
+                is DataState.Success -> call.respond(HttpStatusCode.OK,  responseSMS.data)
+            }
         }
     }
 

@@ -122,7 +122,7 @@ class DataRepositoryImpl(private val ktormDB : Database) : DataRepository {
 
     }
 
-    override suspend fun sendSMS(phonNumb: String, message: String) : List<Recipient?>{
+    override suspend fun sendSMS(phonNumb: String, message: String) : DataState<List<Recipient?>>{
         val username = "muchbeer"
         val apiKey = "1b949d6294137d690f976b69c670a25594d12a5207237412c416a625181b1375"
 
@@ -132,11 +132,12 @@ class DataRepositoryImpl(private val ktormDB : Database) : DataRepository {
         val recepient = arrayOf(phonNumb)
         val from = "AFRICASTKNG"
 
-       try {
-           return sms.send(message, from, recepient, true)
-
+        return try {
+            DataState.Success(sms.send(message, from, recepient, true))
         } catch (ex : Exception) {
-          return emptyList()
+            DataState.ErrorException(exception = ex)
+        } catch (io : IOException) {
+            DataState.ErrorException(exception = io)
         }
     }
 }
