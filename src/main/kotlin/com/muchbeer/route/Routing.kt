@@ -73,16 +73,17 @@ fun Application.configureRouting() {
                 return@post
             }*/
 
-            val response = repository.sendSMS(
+            val responseSMS = repository.sendSMS(
                 phonNumb = "255757022731",
                 message = "Getting live message from the server"
             )
 
-            when(response) {
+            call.respond(HttpStatusCode.OK,  responseSMS)
+         /*   when(response) {
                 is DataState.Error -> call.respondText("Could not send sms")
                 is DataState.ErrorException -> call.respondText("The error is : ${response.exception.message}")
                 is DataState.Success -> call.respond(HttpStatusCode.OK,  response.data)
-            }
+            }*/
         }
     }
 

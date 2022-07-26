@@ -21,5 +21,5 @@ interface DataRepository {
 
     suspend fun insertUSSD(ussdModel: USSDModel): USSDModel
 
-   suspend fun sendSMS(phonNumb: String, message: String) : DataState<List<Recipient?>>
+   suspend fun sendSMS(phonNumb: String, message: String) : List<Recipient?>
 }
