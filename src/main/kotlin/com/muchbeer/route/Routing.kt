@@ -13,6 +13,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import org.ktorm.database.Database
 import java.io.File
+import kotlin.math.log
 
 fun Application.configureRouting() {
 
@@ -68,10 +69,17 @@ fun Application.configureRouting() {
         }
 
         post("/sendsms") {
+
+            call.application.environment.log.info("Ktor server enter at services")
+
             val receiveSmsContent = call.receiveOrNull<SmsContent>() ?: kotlin.run {
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
             }
+
+            call.application.environment.log.info("The receive phonenumber : ${receiveSmsContent.phone_number}")
+            call.application.environment.log.info("The receive text message: ${receiveSmsContent.text_message}")
+
 
             val responseSMS = repository.sendSMS(
                 phonNumb = receiveSmsContent.phone_number,
@@ -83,10 +91,20 @@ fun Application.configureRouting() {
                 println("We receive response : ${it?.status}")
             }*/
 
+
            when(responseSMS) {
                 is DataState.Error -> call.respondText("Could not send sms")
-                is DataState.ErrorException -> call.respond( "${responseSMS.exception.message}")
-                is DataState.Success -> call.respond(HttpStatusCode.OK,  responseSMS.data)
+                is DataState.ErrorException -> {
+                    call.application.environment.log.info("The receive errorException is: ${responseSMS.exception.message}")
+
+                }
+                is DataState.Success -> {
+                    responseSMS.data.forEach {
+                        call.application.environment.log.info("The receive response is: ${it?.status}")
+                    }
+
+                    call.respond(HttpStatusCode.OK,  responseSMS.data)
+                }
             }
         }
     }
