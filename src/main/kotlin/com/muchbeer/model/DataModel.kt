@@ -20,3 +20,14 @@ data class ImageUpload(
     val fileName : String,
     val fileDescription : String
 )
+
+data class SmsContent(
+    val phone_number : String,
+    val text_message : String
+)
+
+sealed class DataState<out R> {
+    data class Success<T>(val data: T) : DataState<T>()
+    data class Error(val error: String) : DataState<Nothing>()
+    data class ErrorException(val exception: Exception) : DataState<Nothing>()
+}

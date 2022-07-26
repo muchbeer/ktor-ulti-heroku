@@ -1,5 +1,7 @@
 package com.muchbeer.repository
 
+import com.africastalking.sms.Recipient
+import com.muchbeer.model.DataState
 import com.muchbeer.model.ImageUpload
 import com.muchbeer.model.School
 import com.muchbeer.model.USSDModel
@@ -19,5 +21,5 @@ interface DataRepository {
 
     suspend fun insertUSSD(ussdModel: USSDModel): USSDModel
 
-    fun sendSMS(phonNumb: String, message: String)
+   suspend fun sendSMS(phonNumb: String, message: String) : DataState<List<Recipient?>>
 }

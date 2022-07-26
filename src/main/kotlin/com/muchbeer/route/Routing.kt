@@ -1,9 +1,7 @@
 package com.muchbeer.route
 
 import com.muchbeer.db.DatabaseFactory
-import com.muchbeer.model.ImageUpload
-import com.muchbeer.model.School
-import com.muchbeer.model.USSDModel
+import com.muchbeer.model.*
 import com.muchbeer.repository.DataRepository
 import com.muchbeer.repository.DataRepositoryImpl
 import com.muchbeer.util.Constants
@@ -51,7 +49,6 @@ fun Application.configureRouting() {
                 return@post
             }
 
-
             val response: School = repository.insertSchool(addSchool)
 
             call.respond(status = HttpStatusCode.OK, response)
@@ -68,6 +65,24 @@ fun Application.configureRouting() {
                 call.respond(status = HttpStatusCode.OK, response)
             }
 
+        }
+
+        post("/sendsms") {
+            val receiveSmsContent = call.receiveOrNull<SmsContent>() ?: kotlin.run {
+                call.respond(HttpStatusCode.BadRequest)
+                return@post
+            }
+
+            val response = repository.sendSMS(
+                phonNumb = receiveSmsContent.phone_number,
+                message = receiveSmsContent.text_message
+            )
+
+            when(response) {
+                is DataState.Error -> call.respondText("Could not send sms")
+                is DataState.ErrorException -> call.respondText("The error is : ${response.exception.message}")
+                is DataState.Success -> call.respond(HttpStatusCode.OK,  response.data)
+            }
         }
     }
 
@@ -88,7 +103,8 @@ fun Application.configureRouting() {
                         is PartData.FileItem -> {
                             fileName = part.originalFileName as String
                             val fileBytes = part.streamProvider().readBytes()
-                            File("uploads/$fileName").writeBytes(fileBytes)
+                     File("uploads/$fileName").writeBytes(fileBytes)
+
                         }
                         else -> Unit
                     }

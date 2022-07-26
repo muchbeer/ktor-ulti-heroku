@@ -1,5 +1,8 @@
 package com.muchbeer.repository
 
+import com.africastalking.AfricasTalking
+import com.africastalking.SmsService
+import com.africastalking.sms.Recipient
 import com.muchbeer.db.SchoolTable
 import com.muchbeer.db.SchoolTable.region
 import com.muchbeer.db.SchoolTable.school
@@ -10,6 +13,7 @@ import com.muchbeer.db.UssdTable.phoneNumber
 import com.muchbeer.db.UssdTable.serviceCode
 import com.muchbeer.db.UssdTable.sessionId
 import com.muchbeer.db.UssdTable.text
+import com.muchbeer.model.DataState
 import com.muchbeer.model.ImageUpload
 import com.muchbeer.model.School
 import com.muchbeer.model.USSDModel
@@ -21,6 +25,7 @@ import org.ktorm.dsl.update
 import org.ktorm.entity.firstOrNull
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList
+import java.io.IOException
 
 class DataRepositoryImpl(private val ktormDB : Database) : DataRepository {
     override suspend fun retrieveAllSchool(): List<School> {
@@ -115,10 +120,23 @@ class DataRepositoryImpl(private val ktormDB : Database) : DataRepository {
             text = ussdModel.text
         ) else USSDModel("2", "0755", "123", "000", "nothing entered")
 
-
     }
 
-    override fun sendSMS(phonNumb: String, message: String) {
-        //TODO
+    override suspend fun sendSMS(phonNumb: String, message: String) : DataState<List<Recipient?>>{
+        val username = "muchbeer"
+        val apiKey = "1b949d6294137d690f976b69c670a25594d12a5207237412c416a625181b1375"
+
+        AfricasTalking.initialize(username, apiKey)
+
+        val sms : SmsService = AfricasTalking.getService(AfricasTalking.SERVICE_SMS)
+        val recepient = arrayOf(phonNumb)
+        val from = "AFRICASTKNG"
+
+       try {
+           val response = sms.send(message, from, recepient, true)
+         return DataState.Success(response)
+        } catch (ex : Exception) {
+          return DataState.ErrorException(ex)
+        }
     }
 }
