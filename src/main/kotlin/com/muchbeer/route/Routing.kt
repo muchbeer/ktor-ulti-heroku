@@ -67,18 +67,23 @@ fun Application.configureRouting() {
 
         }
 
-        get("/sendsms") {
-         /*   val receiveSmsContent = call.receiveOrNull<SmsContent>() ?: kotlin.run {
+        post("/sendsms") {
+            val receiveSmsContent = call.receiveOrNull<SmsContent>() ?: kotlin.run {
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
-            }*/
+            }
 
             val responseSMS = repository.sendSMS(
-                phonNumb = "255757022731",
-                message = "Getting live message from the server"
+                phonNumb = receiveSmsContent.phone_number,
+                message = receiveSmsContent.text_message
             )
+            println("We receive number : ${receiveSmsContent.phone_number}")
+            println("We receive message : ${receiveSmsContent.text_message}")
+            responseSMS.forEach {
+                println("We receive response : ${it?.status}")
+            }
 
-            call.respond(HttpStatusCode.OK,  responseSMS)
+            call.respond( responseSMS)
          /*   when(response) {
                 is DataState.Error -> call.respondText("Could not send sms")
                 is DataState.ErrorException -> call.respondText("The error is : ${response.exception.message}")
@@ -86,6 +91,7 @@ fun Application.configureRouting() {
             }*/
         }
     }
+
 
     routing {
         var fileDescription = ""
