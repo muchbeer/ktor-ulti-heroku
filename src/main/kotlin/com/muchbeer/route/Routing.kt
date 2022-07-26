@@ -13,7 +13,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import org.ktorm.database.Database
 import java.io.File
-import kotlin.math.log
 
 fun Application.configureRouting() {
 
@@ -71,29 +70,30 @@ fun Application.configureRouting() {
         post("/sendsms") {
 
             call.application.environment.log.info("Ktor server enter at services")
-
+            println("Ktor server enter at services")
             val receiveSmsContent = call.receiveOrNull<SmsContent>() ?: kotlin.run {
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
             }
 
             call.application.environment.log.info("The receive phonenumber : ${receiveSmsContent.phone_number}")
+            println("The receive phonenumber : ${receiveSmsContent.phone_number}")
             call.application.environment.log.info("The receive text message: ${receiveSmsContent.text_message}")
-
+            println("The receive text message: ${receiveSmsContent.text_message}")
 
             val responseSMS = repository.sendSMS(
                 phonNumb = receiveSmsContent.phone_number,
                 message = receiveSmsContent.text_message
             )
-      /*      println("We receive number : ${receiveSmsContent.phone_number}")
+            /*      println("We receive number : ${receiveSmsContent.phone_number}")
             println("We receive message : ${receiveSmsContent.text_message}")
             responseSMS.forEach {
                 println("We receive response : ${it?.status}")
             }*/
 
 
-           when(responseSMS) {
-                is DataState.Error -> call.respondText("Could not send sms")
+            when (responseSMS) {
+                is DataState.Error -> call.respond("$responseSMS.error")
                 is DataState.ErrorException -> {
                     call.application.environment.log.info("The receive errorException is: ${responseSMS.exception.message}")
 
@@ -103,7 +103,7 @@ fun Application.configureRouting() {
                         call.application.environment.log.info("The receive response is: ${it?.status}")
                     }
 
-                    call.respond(HttpStatusCode.OK,  responseSMS.data)
+                    call.respond(HttpStatusCode.OK, responseSMS.data)
                 }
             }
         }

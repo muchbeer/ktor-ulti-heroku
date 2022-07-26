@@ -136,8 +136,8 @@ class DataRepositoryImpl(private val ktormDB : Database) : DataRepository {
             DataState.Success(sms.send(message, from, recepient, true))
         } catch (ex : Exception) {
             DataState.ErrorException(exception = ex)
-        } catch (io : IOException) {
-            DataState.ErrorException(exception = io)
+        } catch (io : Throwable) {
+            DataState.Error(error = io.message.toString())
         }
     }
 }
