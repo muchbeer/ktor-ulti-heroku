@@ -67,15 +67,15 @@ fun Application.configureRouting() {
 
         }
 
-        post("/sendsms") {
-            val receiveSmsContent = call.receiveOrNull<SmsContent>() ?: kotlin.run {
+        get("/sendsms") {
+         /*   val receiveSmsContent = call.receiveOrNull<SmsContent>() ?: kotlin.run {
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
-            }
+            }*/
 
             val response = repository.sendSMS(
-                phonNumb = receiveSmsContent.phone_number,
-                message = receiveSmsContent.text_message
+                phonNumb = "255757022731",
+                message = "Getting live message from the server"
             )
 
             when(response) {
@@ -125,4 +125,5 @@ fun Application.configureRouting() {
             }
         }
     }
+
 }
