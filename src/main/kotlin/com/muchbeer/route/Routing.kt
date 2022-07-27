@@ -54,19 +54,6 @@ fun Application.configureRouting() {
             call.respond(status = HttpStatusCode.OK, response)
         }
 
-        post("/ussd") {
-            val addUssd = call.receive<USSDModel>()
-
-            if (repository.findUSSDSessionById(addUssd.sessionId) != null) {
-                repository.updateSessionId(addUssd.sessionId, addUssd)
-                call.respond(status = HttpStatusCode.OK, message = "Success ")
-            } else {
-                val response = repository.insertUSSD(addUssd)
-                call.respond(status = HttpStatusCode.OK, response)
-            }
-
-        }
-
 /*        post("/sendsms") {
 
             call.application.environment.log.info("Ktor server enter at services")

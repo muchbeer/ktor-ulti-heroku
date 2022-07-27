@@ -1,8 +1,5 @@
 package com.muchbeer.repository
 
-import com.africastalking.AfricasTalking
-import com.africastalking.SmsService
-import com.africastalking.sms.Recipient
 import com.muchbeer.db.SchoolTable
 import com.muchbeer.db.SchoolTable.region
 import com.muchbeer.db.SchoolTable.school

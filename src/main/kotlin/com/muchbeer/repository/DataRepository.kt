@@ -1,6 +1,5 @@
 package com.muchbeer.repository
 
-import com.africastalking.sms.Recipient
 import com.muchbeer.model.DataState
 import com.muchbeer.model.ImageUpload
 import com.muchbeer.model.School
