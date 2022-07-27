@@ -21,23 +21,3 @@ interface SchoolEntity : Entity<SchoolEntity> {
     val sex : String
 
 }
-
-
-object UssdTable : Table<UssdEntity>("ussd"){
-
-    val sessionId = varchar("sessionId").primaryKey().bindTo { it.sessionId }
-    val phoneNumber = varchar("phoneNumber").bindTo { it.phoneNumber }
-    val networkCode = varchar("networkCode").bindTo { it.networkCode }
-    val serviceCode = varchar("serviceCode").bindTo { it.serviceCode }
-    val text = varchar("text").bindTo { it.text }
-}
-
-interface UssdEntity : Entity<UssdEntity> {
-
-    companion object : Entity.Factory<UssdEntity>()
-    val sessionId : String
-    val phoneNumber : String
-    val networkCode : String
-    val serviceCode : String
-    val text : String
-}
