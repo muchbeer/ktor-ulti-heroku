@@ -20,7 +20,7 @@ application {
 repositories {
     mavenCentral()
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
-    maven { setUrl("https://jitpack.io") }
+  //  maven { setUrl("https://jitpack.io") }
 }
 
 tasks {
@@ -51,5 +51,5 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
     //africastalking api
-    implementation("com.github.AfricasTalkingLtd.africastalking-java:core:3.4.8")
+   // implementation("com.github.AfricasTalkingLtd.africastalking-java:core:3.4.8")
 }

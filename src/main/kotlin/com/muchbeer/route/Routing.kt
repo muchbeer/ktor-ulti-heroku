@@ -67,7 +67,7 @@ fun Application.configureRouting() {
 
         }
 
-        post("/sendsms") {
+/*        post("/sendsms") {
 
             call.application.environment.log.info("Ktor server enter at services")
             println("Ktor server enter at services")
@@ -85,11 +85,11 @@ fun Application.configureRouting() {
                 phonNumb = receiveSmsContent.phone_number,
                 message = receiveSmsContent.text_message
             )
-            /*      println("We receive number : ${receiveSmsContent.phone_number}")
+            *//*      println("We receive number : ${receiveSmsContent.phone_number}")
             println("We receive message : ${receiveSmsContent.text_message}")
             responseSMS.forEach {
                 println("We receive response : ${it?.status}")
-            }*/
+            }*//*
 
 
             when (responseSMS) {
@@ -106,7 +106,7 @@ fun Application.configureRouting() {
                     call.respond(HttpStatusCode.OK, responseSMS.data)
                 }
             }
-        }
+        }*/
     }
 
 
